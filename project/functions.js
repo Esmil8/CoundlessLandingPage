@@ -3,7 +3,8 @@ var nameInput = document.querySelector('#name');
 var emailInput = document.querySelector('#email');
 var errorName = document.querySelector('#error-name');
 var errorEmail = document.querySelector('#error-email');
-function validateField(input, errorElement) {
+var buttoncolor = document.querySelector('#buttoncolor');
+var validateField = function (input, errorElement) {
     if (!input.validity.valid) {
         errorElement.textContent = input.validationMessage;
         errorElement.classList.remove('hidden');
@@ -17,7 +18,7 @@ function validateField(input, errorElement) {
         input.setAttribute('aria-invalid', 'false');
     }
     ;
-}
+};
 nameInput.addEventListener('input', function () {
     validateField(nameInput, errorName);
 });
@@ -40,15 +41,33 @@ emailInput.addEventListener('blur', function () {
 });
 form.addEventListener('submit', function (Event) {
     Event.preventDefault();
+    var userName = nameInput.value;
+    var userEmail = emailInput.value;
+    console.log("Name: ".concat(userName, ", Email: ").concat(userEmail));
     validateField(nameInput, errorName);
     validateField(emailInput, errorEmail);
     if (!form.checkValidity()) {
         var firstInvalid = form.querySelector(':invalid');
         firstInvalid === null || firstInvalid === void 0 ? void 0 : firstInvalid.focus();
     }
-    alert('Form submitted');
+    else if (form.checkValidity()) {
+        buttoncolor.classList.remove('bg-yellow-400', 'hover:bg-yellow-500');
+        buttoncolor.textContent = 'Submitting...';
+        setTimeout(function () {
+            buttoncolor.classList.add('bg-green-500', 'hover:bg-green-600');
+            buttoncolor.textContent = 'Submitted successfully!';
+        }, 2000);
+        buttoncolor.disabled = true;
+        setTimeout(function () {
+            form.reset();
+            buttoncolor.disabled = false;
+            buttoncolor.classList.remove('bg-green-500', 'hover:bg-green-600');
+            buttoncolor.classList.add('bg-yellow-400', 'hover:bg-yellow-500');
+            buttoncolor.textContent = 'Start Free Trial';
+        }, 8000);
+    }
 });
-function validateCamp(input, errorElement) {
+var validateCamp = function (input, errorElement) {
     var customValidityMessage = '';
     input.setCustomValidity('');
     errorElement.textContent = '';
@@ -66,7 +85,7 @@ function validateCamp(input, errorElement) {
     }
     input.setCustomValidity(customValidityMessage);
     validateField(input, errorElement);
-}
+};
 nameInput.addEventListener('input', function () {
     validateCamp(nameInput, errorName);
 });

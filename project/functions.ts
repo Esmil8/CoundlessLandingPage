@@ -4,8 +4,9 @@ const nameInput = document.querySelector('#name') as HTMLInputElement;
 const emailInput = document.querySelector('#email') as HTMLInputElement;
 const errorName = document.querySelector('#error-name') as HTMLSpanElement;
 const errorEmail = document.querySelector('#error-email') as HTMLSpanElement;
+const buttoncolor = document.querySelector('#buttoncolor') as HTMLButtonElement;
 
- function validateField(input: HTMLInputElement, errorElement: HTMLElement) {
+ const validateField = (input: HTMLInputElement, errorElement: HTMLElement): void => {
 
     if(!input.validity.valid) {
 
@@ -60,6 +61,11 @@ const errorEmail = document.querySelector('#error-email') as HTMLSpanElement;
     form.addEventListener('submit', (Event) => {
         Event.preventDefault();
 
+        const userName = nameInput.value;
+        const userEmail = emailInput.value;
+
+        console.log( `Name: ${userName}, Email: ${userEmail}` );
+
         validateField(nameInput, errorName);
         validateField(emailInput, errorEmail);
 
@@ -67,12 +73,33 @@ const errorEmail = document.querySelector('#error-email') as HTMLSpanElement;
             const firstInvalid = form.querySelector(':invalid') as HTMLInputElement;
             firstInvalid?.focus();
         }
+        else if (form.checkValidity()){
+            buttoncolor.classList.remove('bg-yellow-400', 'hover:bg-yellow-500');
+            buttoncolor.textContent = 'Submitting...';
 
-        alert('Form submitted');
+            setTimeout ( ()=> {
+                buttoncolor.classList.add('bg-green-500', 'hover:bg-green-600');
+            buttoncolor.textContent = 'Submitted successfully!';
+            
+            },2000);
+            buttoncolor.disabled = true;
+
+            setTimeout(() => {
+                
+                form.reset();
+                buttoncolor.disabled = false;
+                buttoncolor.classList.remove('bg-green-500', 'hover:bg-green-600');
+                buttoncolor.classList.add( 'bg-yellow-400', 'hover:bg-yellow-500');
+                buttoncolor.textContent = 'Start Free Trial';
+                
+            }, 8000);
+            
+        }
+
+     
     })
 
-
-    function validateCamp (input: HTMLInputElement, errorElement: HTMLElement) {
+    const validateCamp = (input: HTMLInputElement, errorElement: HTMLElement): void => {
 
         let customValidityMessage = '';
 

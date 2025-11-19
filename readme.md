@@ -37,4 +37,4 @@ This project is a modern, responsive, and performance-oriented landing page buil
 - Clean and scalable codebase  
 
 ---
-
+-Favicon
